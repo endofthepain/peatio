@@ -9,7 +9,7 @@
 
 /public/assets
 
-/secrets
+/config/secrets
 
 # Ignore the default SQLite database.
 /db/*.sqlite3

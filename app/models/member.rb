@@ -7,7 +7,7 @@ class Member < ActiveRecord::Base
   has_many :orders
 
   # This trick is used to display only deposit accounts.
-  has_many :accounts, -> { binding.pry; where(code: Accounting.deposit_codes) }
+  has_many :accounts, -> { where(code: Accounting::Chart.deposit_codes) }
   has_many :all_accounts, class_name: Account
 
   has_many :payment_addresses, through: :accounts

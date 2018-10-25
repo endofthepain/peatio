@@ -41,27 +41,27 @@ class Account < ActiveRecord::Base
     operations.sum(:credit) - operations.sum(:debit)
   end
 
-  def locked
-    # Delegate locked computation to account with locked funds.
+  def locked_account
     Account.find_by(
       member_id: member_id,
       currency_id: currency_id,
       code: Accounting::Chart.locked_codes
-    ).balance
+    )
+  end
+
+  def locked
+    # Delegate locked computation to account with locked funds.
+    locked_account.balance
   end
 
   def plus_funds!(amount)
-    update_columns((attributes_after_plus_funds!(amount)))
+    Operation.create!(credit: amount, reference: Deposit.first, account: self)
   end
 
   def plus_funds(amount)
+    raise AccountError, "Cannot add funds (amount: #{amount})." if amount <= ZERO
     with_lock { plus_funds!(amount) }
     self
-  end
-
-  def attributes_after_plus_funds!(amount)
-    raise AccountError, "Cannot add funds (amount: #{amount})." if amount <= ZERO
-    { balance: balance + amount }
   end
 
   def sub_funds!(amount)

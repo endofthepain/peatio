@@ -11,11 +11,10 @@ class Member < ActiveRecord::Base
   has_many :deposits, -> { order(id: :desc) }
   has_many :authentications, dependent: :delete_all
 
-  scope :enabled, -> { where(disabled: false) }
+  scope :enabled, -> { where(state: 'active') }
 
-  before_validation :downcase_email, :assign_sn
+  before_validation :downcase_email
 
-  validates :sn,    presence: true, uniqueness: true
   validates :email, presence: true, uniqueness: true, email: true
   validates :level, numericality: { greater_than_or_equal_to: 0 }
 
@@ -77,6 +76,11 @@ class Member < ActiveRecord::Base
     def locate_email(auth_hash)
       find_by_email(auth_hash.dig('info', 'email'))
     end
+  end
+
+  def sn
+    Rails.logger.debug { "SN is deprecated in favor of UID" }
+    uid
   end
 
   def trades
@@ -160,22 +164,20 @@ private
 end
 
 # == Schema Information
-# Schema version: 20180530122201
+# Schema version: 20181027192001
 #
 # Table name: members
 #
-#  id           :integer          not null, primary key
-#  level        :integer          default(0), not null
-#  sn           :string(12)       not null
-#  email        :string(255)      not null
-#  disabled     :boolean          default(FALSE), not null
-#  api_disabled :boolean          default(FALSE), not null
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  id         :integer          not null, primary key
+#  uid        :string(12)       not null
+#  email      :string(255)      not null
+#  level      :integer          not null
+#  role       :string(16)       not null
+#  state      :string(16)       not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 # Indexes
 #
-#  index_members_on_disabled  (disabled)
-#  index_members_on_email     (email) UNIQUE
-#  index_members_on_sn        (sn) UNIQUE
+#  index_members_on_email  (email) UNIQUE
 #

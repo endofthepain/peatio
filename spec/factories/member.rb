@@ -5,6 +5,7 @@ FactoryBot.define do
   factory :member do
     email { Faker::Internet.email }
     level { 0 }
+    uid { "U123456" }
 
     trait :level_3 do
       level { 3 }
@@ -30,7 +31,7 @@ FactoryBot.define do
 
     trait :barong do
       after :create do |member|
-        member.authentications.build(provider: 'barong', uid: Faker::Internet.password(14, 14)).save!
+        member.authentications.build(provider: 'barong', uid: Faker::Internet.password(12, 12)).save!
       end
     end
 

@@ -118,10 +118,6 @@ class Member < ActiveRecord::Base
     auth(name).destroy
   end
 
-  def uid
-    self.class.uid(self)
-  end
-
   def trigger_pusher_event(event, data)
     self.class.trigger_pusher_event(self, event, data)
   end

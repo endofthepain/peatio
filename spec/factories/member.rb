@@ -5,7 +5,9 @@ FactoryBot.define do
   factory :member do
     email { Faker::Internet.email }
     level { 0 }
-    uid { "U123456" }
+    uid { "U123456789" }
+    role { "member" }
+    state { "active" }
 
     trait :level_3 do
       level { 3 }
@@ -24,9 +26,7 @@ FactoryBot.define do
     end
 
     trait :admin do
-      after :create do |member|
-        ENV['ADMIN'] = (Member.admins << member.email).join(',')
-      end
+      role { "admin" }
     end
 
     trait :barong do

@@ -30,9 +30,7 @@ FactoryBot.define do
     end
 
     trait :barong do
-      after :create do |member|
-        member.authentications.build(provider: 'barong', uid: Faker::Internet.password(12, 12)).save!
-      end
+      level { 3 }
     end
 
     factory :admin_member, traits: %i[ admin ]

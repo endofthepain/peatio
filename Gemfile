@@ -10,11 +10,6 @@ gem 'puma', '~> 3.11.4'
 gem 'mysql2', '~> 0.4.10'
 gem 'redis-rails', '~> 5.0.2'
 gem 'jbuilder', '~> 2.7.0'
-gem 'oauth2', github: 'oauth-xx/oauth2'
-gem 'omniauth', '~> 1.8.1'
-gem 'omniauth-auth0', '~> 2.0.0', require: false
-gem 'omniauth-google-oauth2', '~> 0.5.3', require: false
-gem 'omniauth-barong', '~> 0.1.4', require: false
 gem 'figaro', '~> 1.1.1'
 gem 'hashie', '~> 3.5.7'
 gem 'aasm', '~> 5.0.0'
